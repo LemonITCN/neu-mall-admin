@@ -1,7 +1,7 @@
 <template>
   <el-dialog
-    :title="type == 'add' ? '添加轮播图' : '修改轮播图'"
-    v-model="visible"
+    :title="type === 'add' ? '添加轮播图' : '修改轮播图'"
+    :visible.sync="visible"
     width="400px"
     @close="handleClose"
   >
@@ -18,7 +18,8 @@
           :before-upload="handleBeforeUpload"
           :on-success="handleUrlSuccess"
         >
-          <img style="width: 200px; height: 100px; border: 1px solid #e9e9e9;" v-if="ruleForm.url" :src="ruleForm.url" class="avatar">
+          <img style="width: 200px; height: 100px; border: 1px solid #e9e9e9;" v-if="ruleForm.url" :src="ruleForm.url"
+               class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -39,10 +40,9 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs } from 'vue'
 import axios from '@/utils/axios'
-import { localGet, uploadImgServer, hasEmoji } from '@/utils'
-import { ElMessage } from 'element-plus'
+import { hasEmoji, localGet, uploadImgServer } from '@/utils'
+import { Message } from 'element-ui'
 
 export default {
   name: 'DialogAddSwiper',
@@ -50,9 +50,8 @@ export default {
     type: String,
     reload: Function
   },
-  setup(props) {
-    const formRef = ref(null)
-    const state = reactive({
+  data () {
+    return {
       uploadImgServer,
       token: localGet('token') || '',
       visible: false,
@@ -63,115 +62,113 @@ export default {
       },
       rules: {
         url: [
-          { required: 'true', message: '图片不能为空', trigger: ['change'] }
+          {
+            required: 'true',
+            message: '图片不能为空',
+            trigger: ['change']
+          }
         ],
         sort: [
-          { required: 'true', message: '排序不能为空', trigger: ['change'] }
+          {
+            required: 'true',
+            message: '排序不能为空',
+            trigger: ['change']
+          }
         ]
       },
       id: ''
-    })
-    // 获取详情
-    const getDetail = (id) => {
+    }
+  },
+  methods: {
+    getDetail (id) {
       axios.get(`/carousels/${id}`).then(res => {
-        state.ruleForm = {
+        this.ruleForm = {
           url: res.carouselUrl,
           link: res.redirectUrl,
           sort: res.carouselRank
         }
       })
-    }
-    const handleBeforeUpload = (file) => {
+    },
+    handleBeforeUpload (file) {
       const sufix = file.name.split('.')[1] || ''
       if (!['jpg', 'jpeg', 'png'].includes(sufix)) {
-        ElMessage.error('请上传 jpg、jpeg、png 格式的图片')
+        Message.error('请上传 jpg、jpeg、png 格式的图片')
         return false
       }
-    }
-    // 上传图片
-    const handleUrlSuccess = (val) => {
-      state.ruleForm.url = val.data || ''
-    }
-    // 开启弹窗
-    const open = (id) => {
-      state.visible = true
+    },
+    handleUrlSuccess (val) {
+      this.ruleForm.url = val.data || ''
+    },
+    open (id) {
+      this.visible = true
+      console.log('this.svisiable', this.visible)
       if (id) {
-        state.id = id
-        getDetail(id)
+        this.id = id
+        this.getDetail(id)
       } else {
-        state.ruleForm = {
+        this.ruleForm = {
           url: '',
           link: '',
           sort: ''
         }
       }
-    }
-    // 关闭弹窗
-    const close = () => {
-      state.visible = false
-    }
-    const handleClose = () => {
-      formRef.value.resetFields()
-    }
-    const submitForm = () => {
-      console.log(formRef.value.validate)
-      formRef.value.validate((valid) => {
+    },
+    close () {
+      this.visible = false
+    },
+    handleClose () {
+      this.$refs.formRef.resetFields()
+    },
+    submitForm () {
+      console.log(this.$refs.formRef.validate)
+      this.$refs.formRef.validate((valid) => {
         if (valid) {
-          if (hasEmoji(state.ruleForm.link)) {
-            ElMessage.error('不要输入表情包，再输入就打死你个龟孙儿~')
+          if (hasEmoji(this.ruleForm.link)) {
+            Message.error('不要输入表情包，再输入就打死你个龟孙儿~')
             return
           }
-          if (props.type == 'add') {
+          if (this.type === 'add') {
             axios.post('/carousels', {
-              carouselUrl: state.ruleForm.url,
-              redirectUrl: state.ruleForm.link,
-              carouselRank: state.ruleForm.sort
+              carouselUrl: this.ruleForm.url,
+              redirectUrl: this.ruleForm.link,
+              carouselRank: this.ruleForm.sort
             }).then(() => {
-              ElMessage.success('添加成功')
-              state.visible = false
-              if (props.reload) props.reload()
+              Message.success('添加成功')
+              this.visible = false
+              if (this.reload) this.reload()
             })
           } else {
             axios.put('/carousels', {
-              carouselId: state.id,
-              carouselUrl: state.ruleForm.url,
-              redirectUrl: state.ruleForm.link,
-              carouselRank: state.ruleForm.sort
+              carouselId: this.id,
+              carouselUrl: this.ruleForm.url,
+              redirectUrl: this.ruleForm.link,
+              carouselRank: this.ruleForm.sort
             }).then(() => {
-              ElMessage.success('修改成功')
-              state.visible = false
-              if (props.reload) props.reload()
+              Message.success('修改成功')
+              this.visible = false
+              if (this.reload) this.reload()
             })
           }
         }
       })
-    }
-    return {
-      ...toRefs(state),
-      open,
-      close,
-      formRef,
-      handleBeforeUpload,
-      handleUrlSuccess,
-      submitForm,
-      handleClose
     }
   }
 }
 </script>
 
 <style scoped>
-  .avatar-uploader {
-    width: 100px;
-    height: 100px;
-    color: #ddd;
-    font-size: 30px;
-  }
-  .avatar-uploader-icon {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: 1px solid #e9e9e9;
-    padding: 32px 17px;
-  }
+.avatar-uploader {
+  width: 100px;
+  height: 100px;
+  color: #ddd;
+  font-size: 30px;
+}
+
+.avatar-uploader-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #e9e9e9;
+  padding: 32px 17px;
+}
 </style>

@@ -109,8 +109,8 @@ export default {
       }, false)
     }
   },
-  methods: {
-    unwatch (to, from, next) {
+  destroyed () {
+    this.$router.beforeEach((to, from, next) => {
       if (to.path === '/login') {
         // 如果路径是 /login 则正常执行
         next()
@@ -127,10 +127,7 @@ export default {
       this.showMenu = !this.noMenu.includes(to.path)
       this.currentPath = to.path
       document.title = pathMap[to.name]
-    }
-  },
-  destroyed () {
-    this.unwatch()
+    })
   }
 }
 </script>

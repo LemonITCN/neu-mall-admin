@@ -4,7 +4,7 @@ import router from '@/router/index'
 import { localGet } from './index'
 
 // 这边由于后端没有区分测试和正式，姑且都写成一个接口。
-axios.defaults.baseURL = 'http://backend-api-02.newbee.ltd/manage-api/v1'
+axios.defaults.baseURL = '/api'
 // 携带 cookie，对目前的项目没有什么作用，因为我们是 token 鉴权
 axios.defaults.withCredentials = true
 // 请求头，headers 信息
