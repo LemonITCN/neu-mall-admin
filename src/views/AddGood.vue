@@ -169,7 +169,6 @@ export default {
       // 图片上传并返回了结果，想要自己把图片插入到编辑器中
       // 例如服务器端返回的不是 { errno: 0, data: [...] } 这种格式，可使用 customInsert
       customInsert: function (insertImgFn, result) {
-        console.log('result', result)
         // result 即服务端返回的接口
         // insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
         if (result.data && result.data.length) {
@@ -250,7 +249,6 @@ export default {
             Message.error('商品标签不能超过16个字符')
             return
           }
-          console.log('params', params)
           if (this.id) {
             params.goodsId = this.id
             // 修改商品使用 put 方法

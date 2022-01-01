@@ -61,7 +61,7 @@
       <el-container class="content">
         <Header/>
         <div class="main">
-          <router-view/>
+          <router-view :key="key"/>
         </div>
         <Footer/>
       </el-container>
@@ -83,12 +83,17 @@ export default {
     Header,
     Footer
   },
+  computed: {
+    key () {
+      return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
+    }
+  },
   data () {
     return {
       noMenu: ['/login'],
       defaultOpen: ['1', '2', '3', '4'],
       showMenu: true,
-      currentPath: '/dashboard',
+      currentPath: '/introduce',
       count: {
         number: 1
       }
@@ -102,7 +107,6 @@ export default {
     if (window.history && window.history.pushState) {
       history.pushState(null, null, document.URL)
       window.addEventListener('popstate', () => {
-        console.log('hahahah', localGet('token'))
         if (!localGet('token')) {
           this.showMenu = false
         }

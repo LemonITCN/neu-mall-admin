@@ -101,7 +101,6 @@ export default {
     },
     open (id) {
       this.visible = true
-      console.log('this.svisiable', this.visible)
       if (id) {
         this.id = id
         this.getDetail(id)
@@ -120,7 +119,6 @@ export default {
       this.$refs.formRef.resetFields()
     },
     submitForm () {
-      console.log(this.$refs.formRef.validate)
       this.$refs.formRef.validate((valid) => {
         if (valid) {
           if (hasEmoji(this.ruleForm.link)) {

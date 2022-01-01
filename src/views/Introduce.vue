@@ -78,7 +78,6 @@ export default {
   name: 'Introduce',
   methods: {
     goJuejin () {
-      console.log('goJuejin')
       window.open('https://juejin.cn/book/6933939264455442444', 'target')
     }
   }

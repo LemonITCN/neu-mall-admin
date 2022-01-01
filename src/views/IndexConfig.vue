@@ -3,7 +3,7 @@
     <el-card class="index-container">
       <template #header>
         <div class="header">
-          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd">增加</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd" style="margin-right: 10px">增加</el-button>
           <el-popconfirm
             title="确定删除吗？"
             @confirm="handleDelete"
@@ -117,15 +117,19 @@ export default {
     this.configType = configTypeMap[this.$route.name]
     this.getIndexConfig()
   },
-  destroyed () {
-    this.$router.beforeEach((to) => {
-      if (['hot', 'new', 'recommend'].includes(to.name)) {
-        this.configType = configTypeMap[to.name]
-        this.currentPage = 1
-        this.getIndexConfig()
-      }
-    })
-  },
+  // beforeRouteLeave (to, from, next) {
+  //   console.log('beforeRouteUpdate')
+  //   next()
+  // },
+  // destroyed () {
+  //   this.$router.beforeEach((to) => {
+  //     if (['hot', 'new', 'recommend'].includes(to.name)) {
+  //       this.configType = configTypeMap[to.name]
+  //       this.currentPage = 1
+  //       this.getIndexConfig()
+  //     }
+  //   })
+  // },
   methods: {
     getIndexConfig () {
       this.loading = true

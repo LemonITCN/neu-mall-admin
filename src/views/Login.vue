@@ -62,7 +62,6 @@ export default {
             window.location.href = '/'
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })

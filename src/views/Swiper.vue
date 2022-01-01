@@ -1,9 +1,10 @@
 <template>
   <div>
     <el-card class="swiper-container">
-      <template #header>
+      <div slot="header">
         <div class="header">
-          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd">增加</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd" style="margin-right: 10px">增加
+          </el-button>
           <el-popconfirm
             title="确定删除吗？"
             @confirm="handleDelete"
@@ -13,7 +14,7 @@
             </template>
           </el-popconfirm>
         </div>
-      </template>
+      </div>
       <el-table
         v-loading="loading"
         ref="multipleTable"
@@ -127,7 +128,6 @@ export default {
     },
     // 修改轮播图
     handleEdit (id) {
-      console.log('哈哈哈哈哈id', this.$refs.addGood)
       this.type = 'edit'
       this.$refs.addGood.open(id)
     },

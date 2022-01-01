@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '@/router/index'
-import { localGet } from './index'
+import { localGet, localSet } from './index'
 
 // 这边由于后端没有区分测试和正式，姑且都写成一个接口。
 axios.defaults.baseURL = '/api'
@@ -22,6 +22,7 @@ axios.interceptors.response.use(res => {
   if (res.data.resultCode !== 200) {
     if (res.data.message) Message.error(res.data.message)
     if (res.data.resultCode === 419) {
+      localSet('token', null)
       router.push({ path: '/login' })
     }
     return Promise.reject(res.data)

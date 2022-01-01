@@ -195,13 +195,11 @@ export default {
       this.getOrderList()
     },
     handleConfig (id) {
-      console.log('id', id)
       let params
       if (id) {
         params = [id]
       } else {
         if (!this.multipleSelection.length) {
-          console.log('state.multipleSelection', this.multipleSelection.length)
           Message.error('请选择项')
           return
         }

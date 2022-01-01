@@ -83,7 +83,6 @@ export default {
   mounted () {
     const { id } = this.$route.query
     axios.get(`/orders/${id}`).then(res => {
-      console.log(res)
       this.data = res
       this.tableData = res.newBeeMallOrderItemVOS
     })

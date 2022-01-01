@@ -61,7 +61,6 @@ export default {
       this.getUserInfo()
     }
     this.$router.afterEach((to) => {
-      console.log('to', to)
       const { id } = to.query
       this.name = pathMap[to.name]
       if (id && to.name === 'add') {

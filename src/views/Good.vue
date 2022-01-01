@@ -1,6 +1,6 @@
 <template>
   <el-card class="good-container">
-    <template #header>
+    <template slot="header">
       <div class="header">
         <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd">新增商品</el-button>
       </div>

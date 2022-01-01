@@ -3,7 +3,7 @@
     <el-card class="category-container">
       <template slot="header">
         <div class="header">
-          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd">增加</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd" style="margin-right: 10px">增加</el-button>
           <el-popconfirm
             title="确定删除吗？"
             @confirm="handleDelete"
